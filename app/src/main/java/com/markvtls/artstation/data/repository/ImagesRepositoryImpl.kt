@@ -1,11 +1,15 @@
 package com.markvtls.artstation.data.repository
 
 import com.markvtls.artstation.data.dto.ImageResponseDto
+import com.markvtls.artstation.data.dto.Images
 import com.markvtls.artstation.data.source.local.ImageEntity
 import com.markvtls.artstation.data.source.remote.GiphyApiService
+import com.markvtls.artstation.domain.model.Image
 import com.markvtls.artstation.domain.repository.ImagesRepository
 import io.realm.kotlin.Realm
 import io.realm.kotlin.ext.query
+import io.realm.kotlin.notifications.SingleQueryChange
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class ImagesRepositoryImpl @Inject constructor(
@@ -16,6 +20,10 @@ class ImagesRepositoryImpl @Inject constructor(
         return giphyApi.getLastTrendingGif(apiKey, limit)
     }
 
+    override suspend fun getRealm(): Flow<SingleQueryChange<ImageEntity>> {
+        val last = realm.query(ImageEntity::class, "id == '1'").first().asFlow()
+        return last
+    }
 
 
     override suspend fun saveImage(id: String, url: String) {

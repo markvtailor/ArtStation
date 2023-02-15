@@ -33,20 +33,18 @@ class MainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        with(binding) {
-
-            viewLifecycleOwner.lifecycleScope.launchWhenResumed {
-                        viewModel.currentImage.observe(viewLifecycleOwner) {
-                            println(it.url)
-                            Glide.with(this@MainFragment)
-                                .load(it.url.toUri())
-                                .fitCenter()
-                                .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
-                                .into(binding.image)
-                        }
-                }
-
+        viewModel.job.start()
+        viewLifecycleOwner.lifecycleScope.launchWhenResumed {
+                    viewModel.currentImage.observe(viewLifecycleOwner) {
+                        println(it.url)
+                        println("updates")
+                        Glide.with(this@MainFragment)
+                            .load(it.url.toUri())
+                            .fitCenter()
+                            .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
+                            .into(binding.image)
+                    }
             }
 
-        }
+    }
     }

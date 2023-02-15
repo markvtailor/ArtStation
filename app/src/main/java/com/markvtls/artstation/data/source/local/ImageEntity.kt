@@ -8,5 +8,6 @@ class ImageEntity: RealmObject {
     @PrimaryKey
     var id: String = "1"
     var url: String = ""
+    var trendingTime = ""
     var isFavorite: Boolean? = false
 }

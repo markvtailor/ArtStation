@@ -2,22 +2,29 @@ package com.markvtls.artstation
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Toolbar
-import androidx.customview.widget.Openable
-import androidx.drawerlayout.widget.DrawerLayout
+import androidx.activity.viewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.*
-import com.google.android.material.navigation.NavigationView
+import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
 import com.markvtls.artstation.databinding.ActivityMainBinding
+import com.markvtls.artstation.presentation.fragments.SettingsViewModel
+import com.markvtls.artstation.workers.ImageUpdateWorker
+import com.markvtls.artstation.workers.NewImagesWorker
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.concurrent.TimeUnit
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
-    private var _appBarConfiguration: AppBarConfiguration? = null
+    private val settingsViewModel: SettingsViewModel by viewModels()
 
+    private var _appBarConfiguration: AppBarConfiguration? = null
     private val appBarConfiguration get() = _appBarConfiguration!!
+
     private var _binding: ActivityMainBinding? = null
     private val binding get() = _binding!!
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -59,5 +66,39 @@ class MainActivity : AppCompatActivity() {
 
     override fun onSupportNavigateUp(): Boolean {
         return findNavController(R.id.nav_fragment).navigateUp(appBarConfiguration)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        runUpdateWorker()
+        WorkManager.getInstance(applicationContext).cancelUniqueWork(NewImagesWorker.WORK_NAME)
+    }
+    override fun onPause() {
+        super.onPause()
+        WorkManager.getInstance(applicationContext).cancelUniqueWork(ImageUpdateWorker.WORK_NAME)
+            settingsViewModel.notificationsSettings.observe(this@MainActivity, Observer { notificationSettings ->
+                if (notificationSettings) {
+                    runNotificationsWorker()
+                }
+            })
+    }
+    private fun runNotificationsWorker() {
+        val newImagesRequest = PeriodicWorkRequestBuilder<NewImagesWorker>(15, TimeUnit.MINUTES).build()
+
+        WorkManager.getInstance(applicationContext).enqueueUniquePeriodicWork(
+            NewImagesWorker.WORK_NAME,
+            ExistingPeriodicWorkPolicy.KEEP,
+            newImagesRequest
+        )
+    }
+
+    private fun runUpdateWorker() {
+        val updateImageRequest = PeriodicWorkRequestBuilder<ImageUpdateWorker>(15, TimeUnit.MINUTES).build()
+
+        WorkManager.getInstance(applicationContext).enqueueUniquePeriodicWork(
+            ImageUpdateWorker.WORK_NAME,
+            ExistingPeriodicWorkPolicy.KEEP,
+            updateImageRequest
+        )
     }
 }

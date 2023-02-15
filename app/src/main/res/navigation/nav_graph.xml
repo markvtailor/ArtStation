@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/mainFragment"
         android:name="com.markvtls.artstation.presentation.fragments.MainFragment"
-        android:label="fragment_main"
+        android:label="Главная"
         tools:layout="@layout/fragment_main" >
         <action
             android:id="@+id/action_mainFragment_to_favoritesFragment"
@@ -20,11 +20,11 @@
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.markvtls.artstation.presentation.fragments.SettingsFragment"
-        android:label="fragment_settings"
+        android:label="Настройки"
         tools:layout="@layout/fragment_settings" />
     <fragment
         android:id="@+id/favoritesFragment"
         android:name="com.markvtls.artstation.presentation.fragments.FavoritesFragment"
-        android:label="fragment_favorites"
+        android:label="Избранное"
         tools:layout="@layout/fragment_favorites" />
 </navigation>
