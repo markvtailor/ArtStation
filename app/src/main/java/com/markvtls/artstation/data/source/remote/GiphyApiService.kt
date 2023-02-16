@@ -6,6 +6,6 @@ import retrofit2.http.Query
 
 interface GiphyApiService {
 
-        @GET("trending")
+        @GET("random")
         suspend fun getLastTrendingGif(@Query("api_key") apiKey: String, @Query("limit") limit: Int): ImageResponseDto
 }

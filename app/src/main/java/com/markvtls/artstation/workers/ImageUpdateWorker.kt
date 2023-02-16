@@ -4,7 +4,6 @@ import android.content.Context
 import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
-import com.markvtls.artstation.domain.use_cases.GetImageByIdUseCase
 import com.markvtls.artstation.domain.use_cases.GetNewImageUseCase
 import com.markvtls.artstation.domain.use_cases.SaveImageUseCase
 import dagger.assisted.Assisted
@@ -18,8 +17,8 @@ class ImageUpdateWorker @AssistedInject constructor(
     private val saveImageUseCase: SaveImageUseCase
 ): CoroutineWorker(context, params)  {
     override suspend fun doWork(): Result {
-        getNewImageUseCase().collect {
-            saveImageUseCase("1",it.url)
+        getNewImageUseCase().collect {image ->
+            saveImageUseCase(image)
         }
         return Result.success()
     }

@@ -4,6 +4,6 @@ object Constants {
 
     const val API_KEY = "GXKYe2uqZXa67tQW5RwDRoq0ZIWr6CNM"
     const val LIMIT = 1
-    const val REALM_DB_NAME = "ImagesDB"
-    const val REALM_SCHEMA_VERSION = 2
+    const val LOADING_ERROR_MESSAGE = "При загрузке возникла ошибка. Обновление данных и получение уведомлений недоступно."
+    const val NOTIFICATIONS_CHANNEL_ID = "100"
 }

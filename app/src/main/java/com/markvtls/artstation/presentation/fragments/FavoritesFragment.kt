@@ -6,10 +6,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.markvtls.artstation.R
 import com.markvtls.artstation.databinding.FragmentFavoritesBinding
+import com.markvtls.artstation.domain.model.Image
+import com.markvtls.artstation.presentation.adapters.FavoritesAdapter
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class FavoritesFragment : Fragment() {
 
 
@@ -27,5 +32,29 @@ class FavoritesFragment : Fragment() {
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            viewModel.favorites.observe(viewLifecycleOwner) {
+                loadFavorites(it)
+            }
+        }
+    }
 
+    private fun loadFavorites(favorites: List<Image>) {
+        val recycler = binding.favorites
+
+        val adapter = FavoritesAdapter(requireContext()) {
+            deleteFavorite(it)
+        }
+
+        recycler.layoutManager = LinearLayoutManager(requireContext())
+        recycler.adapter = adapter
+
+        adapter.submitList(favorites)
+    }
+
+    private fun deleteFavorite(id: String) {
+        viewModel.deleteImageById(id)
+    }
 }

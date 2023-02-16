@@ -12,24 +12,23 @@ import androidx.core.content.getSystemService
 import com.markvtls.artstation.MainActivity
 
 import com.markvtls.artstation.R
+import com.markvtls.artstation.data.Constants.NOTIFICATIONS_CHANNEL_ID
 
 class NotificationsManager(
     private val context: Context) {
 
-    val CHANNEL_ID = "100"
+
 
     init {
         createNotificationChannel()
     }
 
     private fun createNotificationChannel() {
-        // Create the NotificationChannel, but only on API 26+ because
-        // the NotificationChannel class is new and not in the support library
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val name = "Notifications"
             val descriptionText = "ArtStation notifications"
             val importance = NotificationManager.IMPORTANCE_DEFAULT
-            val channel = NotificationChannel(CHANNEL_ID, name, importance).apply {
+            val channel = NotificationChannel(NOTIFICATIONS_CHANNEL_ID, name, importance).apply {
                 description = descriptionText
             }
             // Register the channel with the system
@@ -38,7 +37,7 @@ class NotificationsManager(
 
     }
 
-    val intent = Intent(context, MainActivity::class.java).apply {
+    private val intent = Intent(context, MainActivity::class.java).apply {
         flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
     }
 
@@ -46,7 +45,7 @@ class NotificationsManager(
     val pendingIntent: PendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_IMMUTABLE)
 
     @RequiresApi(Build.VERSION_CODES.M)
-    var builder = NotificationCompat.Builder(context, CHANNEL_ID)
+    var builder = NotificationCompat.Builder(context, NOTIFICATIONS_CHANNEL_ID)
         .setSmallIcon(R.drawable.ic_brush)
         .setContentTitle("ArtStation")
         .setContentText("Доступно новое изображение!")

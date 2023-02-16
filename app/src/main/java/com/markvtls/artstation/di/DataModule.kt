@@ -44,4 +44,6 @@ class DataModule {
     @Singleton
     fun provideSettingsRepository(settingsStore: SettingsStore): SettingsRepository =
         SettingsRepositoryImpl(settingsStore)
+
+
 }

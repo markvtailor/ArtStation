@@ -29,7 +29,7 @@ class SettingsViewModel @Inject constructor(
     }
 
 
-    fun getNotificationsSettings() {
+    private fun getNotificationsSettings() {
         viewModelScope.launch(Dispatchers.IO) {
             settingsRepository.getNotificationSettings().collect {
                 notificationsSettings.postValue(it)

@@ -7,11 +7,11 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
-class GetImageByIdUseCase @Inject constructor(
+class GetLastImageUseCase @Inject constructor(
     private val repository: ImagesRepository
 ){
-    suspend operator fun invoke(id: String): Flow<Image> = flow {
-        val image = repository.getImageById(id).toDomain()
+    suspend operator fun invoke(): Flow<Image> = flow {
+        val image = repository.getMainImage().toDomain()
         emit(image)
     }
 }

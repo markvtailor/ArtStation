@@ -4,10 +4,10 @@ import com.markvtls.artstation.domain.model.Image
 import com.markvtls.artstation.domain.repository.ImagesRepository
 import javax.inject.Inject
 
-class SaveImageUseCase @Inject constructor(
+class AddImageToFavoritesUseCase @Inject constructor(
     private val repository: ImagesRepository
-) {
+){
     suspend operator fun invoke(image: Image) {
-        repository.saveImage(image.id, image.url, image.title, image.isMain, image.isFavorite)
+        repository.addImageToFavorites(image)
     }
 }

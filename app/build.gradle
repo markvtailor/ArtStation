@@ -41,6 +41,7 @@ android {
 
 dependencies {
 
+
     //MaterialDesign
     implementation 'com.google.android.material:material:1.8.0'
 
@@ -63,9 +64,12 @@ dependencies {
     implementation 'androidx.preference:preference:1.2.0'
     implementation 'androidx.core:core-ktx:1.9.0'
     implementation 'androidx.core:core-ktx:+'
-    implementation 'androidx.core:core-ktx:+'
-    implementation 'androidx.core:core-ktx:+'
     kapt 'com.github.bumptech.glide:compiler:4.14.2'
+    implementation ("com.github.bumptech.glide:recyclerview-integration:4.14.2") {
+        // Excludes the support library because it's already included by Glide.
+        transitive = false
+    }
+
 
     // Navigation
     implementation("androidx.navigation:navigation-fragment-ktx:2.5.3")

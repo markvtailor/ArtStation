@@ -5,9 +5,9 @@ import io.realm.kotlin.types.RealmObject
 import io.realm.kotlin.types.annotations.PrimaryKey
 
 class ImageEntity: RealmObject {
-    @PrimaryKey
-    var id: String = "1"
+    var id: String = ""
     var url: String = ""
-    var trendingTime = ""
-    var isFavorite: Boolean? = false
+    var title: String = ""
+    var isMain: Boolean = false
+    var isFavorite: Boolean = false
 }

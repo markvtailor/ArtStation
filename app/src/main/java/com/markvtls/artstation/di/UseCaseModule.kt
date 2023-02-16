@@ -5,11 +5,12 @@ import com.markvtls.artstation.domain.use_cases.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ViewModelComponent
+import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
 
 
 @Module
-@InstallIn(ViewModelComponent::class)
+@InstallIn(SingletonComponent::class)
 class UseCaseModule {
 
     @Provides
@@ -26,9 +27,14 @@ class UseCaseModule {
 
     @Provides
     fun provideGetImageByIdUseCase(repository: ImagesRepository) =
-        GetImageByIdUseCase(repository)
+        GetLastImageUseCase(repository)
 
     @Provides
     fun provideGetFavoritesUseCase(repository: ImagesRepository) =
         GetFavoritesUseCase(repository)
+
+    @Provides
+    @Singleton
+    fun provideAddImageToFavoritesUseCase(repository: ImagesRepository) =
+        AddImageToFavoritesUseCase(repository)
 }

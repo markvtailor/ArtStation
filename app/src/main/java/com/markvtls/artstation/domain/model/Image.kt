@@ -6,15 +6,19 @@ import com.markvtls.artstation.data.source.local.ImageEntity
 data class Image (
     val id: String,
     val url: String,
-    val trending: String
+    val title: String,
+    val isMain: Boolean,
+    val isFavorite: Boolean
         )
 
 
 fun ImageResponseDto.toDomain(): Image {
     return Image(
-        id = this.data.first().id,
-        url = this.data.first().images.original.url,
-        trending = this.data.first().trending_datetime
+        id = this.data.id,
+        url = this.data.images.original.url,
+        title = this.data.title,
+        isMain = true,
+        isFavorite = false
     )
 }
 
@@ -22,6 +26,8 @@ fun ImageEntity.toDomain(): Image {
     return Image (
         id = id,
         url = url,
-        trending = trendingTime
+        title = title,
+        isMain = isMain,
+        isFavorite = isFavorite
             )
 }
