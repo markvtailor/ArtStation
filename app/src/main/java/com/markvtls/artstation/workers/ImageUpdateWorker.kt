@@ -9,6 +9,8 @@ import com.markvtls.artstation.domain.use_cases.SaveImageUseCase
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 
+
+/**This worker is responsible for updating main image when the App is ON*/
 @HiltWorker
 class ImageUpdateWorker @AssistedInject constructor(
     @Assisted private val context: Context,

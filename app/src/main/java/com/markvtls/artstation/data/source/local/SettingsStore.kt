@@ -19,6 +19,10 @@ private val NOTIFICATIONS = booleanPreferencesKey("notifications_setting")
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(
     name = SETTINGS
 )
+
+
+
+/**DataStore for App' Settings */
 class SettingsStore(@ApplicationContext context: Context) {
 
     private val dataStore = context.dataStore

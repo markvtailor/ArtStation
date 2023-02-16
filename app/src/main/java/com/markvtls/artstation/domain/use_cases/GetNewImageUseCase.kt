@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
+/**Use this to get new image data from GiphyAPI*/
 class GetNewImageUseCase @Inject constructor(
     private val repository: ImagesRepository
 ) {

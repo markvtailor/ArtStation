@@ -1,20 +1,22 @@
 package com.markvtls.artstation
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.activity.viewModels
-import androidx.lifecycle.Observer
+import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.*
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.navigateUp
+import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.navigation.ui.setupWithNavController
 import androidx.work.*
 import com.markvtls.artstation.databinding.ActivityMainBinding
-import com.markvtls.artstation.presentation.fragments.SettingsViewModel
 import com.markvtls.artstation.workers.ImageUpdateWorker
 import com.markvtls.artstation.workers.NewImagesWorker
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.concurrent.TimeUnit
 
+
+/**App' Main Activity*/
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
@@ -29,7 +31,6 @@ class MainActivity : AppCompatActivity() {
         _binding = ActivityMainBinding.inflate(layoutInflater)
 
         setContentView(binding.root)
-
 
 
         setSupportActionBar(binding.toolbar)
@@ -54,6 +55,7 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navigationView.setupWithNavController(navController)
 
+        /**Run ImageUpdateWorker*/
         runUpdateWorker()
     }
 
@@ -63,15 +65,19 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
+        /**Stop NotificationsWorker*/
         WorkManager.getInstance(applicationContext).cancelUniqueWork(NewImagesWorker.WORK_NAME)
 
     }
     override fun onStop() {
         super.onStop()
+        /**Stop ImageUpdateWorker and run NotificationsWorker*/
         WorkManager.getInstance(applicationContext).cancelUniqueWork(ImageUpdateWorker.WORK_NAME)
         runNotificationsWorker()
     }
 
+
+    /**Use this to run NotificationsWorker*/
     private fun runNotificationsWorker() {
 
         val constraints = Constraints.Builder()
@@ -79,7 +85,6 @@ class MainActivity : AppCompatActivity() {
             .build()
 
         val newImagesRequest = PeriodicWorkRequestBuilder<NewImagesWorker>(15, TimeUnit.MINUTES)
-            .setInitialDelay(30,TimeUnit.SECONDS)
             .setConstraints(constraints)
             .build()
 
@@ -90,6 +95,7 @@ class MainActivity : AppCompatActivity() {
         )
     }
 
+    /**Use this to run ImageUpdateWorker*/
     private fun runUpdateWorker() {
         val constraints = Constraints.Builder()
             .setRequiredNetworkType(NetworkType.CONNECTED)

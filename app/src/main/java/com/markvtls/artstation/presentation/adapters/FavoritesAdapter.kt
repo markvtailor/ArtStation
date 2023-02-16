@@ -13,6 +13,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.markvtls.artstation.databinding.FragmentFavoritesItemBinding
 import com.markvtls.artstation.domain.model.Image
 
+/**RecyclerView for FavoritesFragment*/
 class FavoritesAdapter(
     private val context: Context,
     private val delete: (String) -> Unit

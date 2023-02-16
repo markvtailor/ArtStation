@@ -14,6 +14,8 @@ class SettingsViewModel @Inject constructor(
     private val settingsRepository: SettingsRepository
 ) : ViewModel() {
 
+
+    /**Notifications Settings LiveData*/
     val notificationsSettings: MutableLiveData<Boolean> by lazy {
         MutableLiveData<Boolean>()
     }
@@ -22,6 +24,8 @@ class SettingsViewModel @Inject constructor(
         getNotificationsSettings()
     }
 
+
+    /**Use this to save Notifications settings*/
     fun saveNotificationsSettings(notifications: Boolean) {
         viewModelScope.launch(Dispatchers.IO) {
             settingsRepository.saveNotificationSettings(notifications)
@@ -29,6 +33,7 @@ class SettingsViewModel @Inject constructor(
     }
 
 
+    /**Use this get saved Notifications settings*/
     private fun getNotificationsSettings() {
         viewModelScope.launch(Dispatchers.IO) {
             settingsRepository.getNotificationSettings().collect {

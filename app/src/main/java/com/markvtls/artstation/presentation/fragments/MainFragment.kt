@@ -1,6 +1,7 @@
 package com.markvtls.artstation.presentation.fragments
 
 
+import android.content.pm.ActivityInfo
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -36,6 +37,7 @@ class MainFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentMainBinding.inflate(inflater, container, false)
+        activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         return binding.root
     }
 
@@ -54,7 +56,6 @@ class MainFragment : Fragment() {
                         MainViewModel.Event.LoadingError -> {
                             showErrorSnackbar()
                         }
-                        else -> {}
                     }
                 }.launchIn(viewLifecycleOwner.lifecycleScope)
             viewLifecycleOwner.lifecycleScope.launchWhenResumed {
@@ -74,12 +75,15 @@ class MainFragment : Fragment() {
 
     }
 
+    /**Use this to handle "Mark as favorite" button clicks*/
     private fun enableFavoritesButton(image: Image) {
         binding.addToFavorites.setOnClickListener {
             viewModel.addNewImageToFavorites(image)
         }
     }
 
+
+    /**Use this to notify user about connection issues*/
     private fun showErrorSnackbar() {
         val snackbar = Snackbar.make(binding.image, LOADING_ERROR_MESSAGE, Snackbar.LENGTH_LONG)
         snackbar.show()

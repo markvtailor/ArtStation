@@ -24,16 +24,16 @@ class MainViewModel @Inject constructor(
     private val getNewImage: GetNewImageUseCase,
     private val saveImage: SaveImageUseCase,
     private val deleteImage: DeleteImageUseCase,
-    private val getImageById: GetLastImageUseCase,
+    private val getLastSavedImage: GetLastImageUseCase,
     private val getFavorites: GetFavoritesUseCase,
     private val addImageToFavorites: AddImageToFavoritesUseCase,
     private val repository: ImagesRepository
 ) : ViewModel() {
 
 
+    /**This class is designed for handling error events*/
     sealed class Event {
         object LoadingError: Event()
-        data class ShowSnackBar(val text: String): Event()
     }
 
     private val eventChannel = Channel<Event>(Channel.BUFFERED)
@@ -44,16 +44,20 @@ class MainViewModel @Inject constructor(
         getFavoriteImages()
     }
 
+
+    /**Favorite Images LiveData*/
     val favorites: MutableLiveData<List<Image>> by lazy {
         MutableLiveData<List<Image>>()
     }
+
+    /**Main Image LiveData*/
     val currentImage: MutableLiveData<Image> by lazy {
         MutableLiveData<Image>()
     }
 
 
 
-
+    /**Get new image from GiphyAPI and save it to RealmDB*/
     private fun getImage() {
         viewModelScope.launch(Dispatchers.IO) {
             try {
@@ -62,6 +66,7 @@ class MainViewModel @Inject constructor(
                     currentImage.postValue(image)
                 }
             } catch (e: Exception) {
+                /**If an error occurred during image loading, load last downloaded image from cache and notify user abouts issues*/
                 loadLastImage()
                 notifyAboutError()
                 e.printStackTrace()
@@ -69,38 +74,48 @@ class MainViewModel @Inject constructor(
         }
     }
 
+    /**Notify about ErrorEvent*/
     private fun notifyAboutError() {
         viewModelScope.launch {
             eventChannel.send(Event.LoadingError)
         }
     }
 
+
+    /**Delete image by ID field*/
     fun deleteImageById(id: String) {
         viewModelScope.launch(Dispatchers.IO) {
             deleteImage(id)
         }
     }
 
+
+    /**Use this to get the last saved image*/
     private suspend fun loadLastImage() {
-        getImageById().collect {
+        getLastSavedImage().collect {
             currentImage.postValue(it)
         }
     }
 
+
+    /**Use this to mark an image as favorite*/
     fun addNewImageToFavorites(image: Image) {
         viewModelScope.launch(Dispatchers.IO) {
             addImageToFavorites(image)
         }
     }
 
+    /**Use this to load all favorite images*/
     private fun getFavoriteImages() {
         viewModelScope.launch(Dispatchers.IO) {
             getFavorites().collect {
-                favorites.postValue(it)
+                favorites?.postValue(it)
             }
         }
     }
 
+
+    /**RealmDB changes listeners*/
     val mainImageChanges = viewModelScope.launch(Dispatchers.Default) {
         repository.subscribeToMainChanges().collect { changes: SingleQueryChange<ImageEntity> ->
             when(changes) {

@@ -9,6 +9,7 @@ import android.view.WindowManager
 import com.markvtls.artstation.MainActivity
 import com.markvtls.artstation.databinding.ActivitySplashScreenBinding
 
+/**This activity is providing App' SplashScreen*/
 class SplashScreen : AppCompatActivity() {
 
     private var _binding: ActivitySplashScreenBinding? = null

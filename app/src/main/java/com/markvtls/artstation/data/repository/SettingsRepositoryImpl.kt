@@ -5,6 +5,9 @@ import com.markvtls.artstation.domain.repository.SettingsRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
+
+
+/**Settings repository implementation. */
 class SettingsRepositoryImpl @Inject constructor(
     private val settings: SettingsStore
 ) : SettingsRepository {

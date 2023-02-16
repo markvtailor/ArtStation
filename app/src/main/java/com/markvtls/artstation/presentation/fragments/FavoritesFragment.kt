@@ -1,14 +1,14 @@
 package com.markvtls.artstation.presentation.fragments
 
+import android.content.pm.ActivityInfo
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.markvtls.artstation.R
 import com.markvtls.artstation.databinding.FragmentFavoritesBinding
 import com.markvtls.artstation.domain.model.Image
 import com.markvtls.artstation.presentation.adapters.FavoritesAdapter
@@ -29,6 +29,7 @@ class FavoritesFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentFavoritesBinding.inflate(inflater, container, false)
+        activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
         return binding.root
     }
 
@@ -41,6 +42,8 @@ class FavoritesFragment : Fragment() {
         }
     }
 
+
+    /**Loading favorites list using RecyclerView*/
     private fun loadFavorites(favorites: List<Image>) {
         val recycler = binding.favorites
 
@@ -54,6 +57,7 @@ class FavoritesFragment : Fragment() {
         adapter.submitList(favorites)
     }
 
+    /**Pass this to RecyclerViewAdapter for enabling ObjectDelete button*/
     private fun deleteFavorite(id: String) {
         viewModel.deleteImageById(id)
     }

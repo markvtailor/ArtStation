@@ -2,8 +2,9 @@ package com.markvtls.artstation.data.source.local
 
 
 import io.realm.kotlin.types.RealmObject
-import io.realm.kotlin.types.annotations.PrimaryKey
 
+
+/**Image Object for RealmDB. */
 class ImageEntity: RealmObject {
     var id: String = ""
     var url: String = ""

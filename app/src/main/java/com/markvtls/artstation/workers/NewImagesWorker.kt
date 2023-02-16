@@ -17,6 +17,8 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import kotlin.random.Random
 
+
+/**This worker is responsible for notifying user about new trending image*/
 @HiltWorker
 class NewImagesWorker @AssistedInject constructor(
     @Assisted private val context: Context,

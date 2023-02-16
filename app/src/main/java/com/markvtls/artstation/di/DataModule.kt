@@ -18,6 +18,9 @@ import io.realm.kotlin.RealmConfiguration
 import javax.inject.Singleton
 
 
+
+
+/**Data components DI. */
 @Module
 @InstallIn(SingletonComponent::class)
 class DataModule {

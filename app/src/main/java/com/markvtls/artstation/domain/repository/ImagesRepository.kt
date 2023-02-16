@@ -7,6 +7,9 @@ import io.realm.kotlin.notifications.ResultsChange
 import io.realm.kotlin.notifications.SingleQueryChange
 import kotlinx.coroutines.flow.Flow
 
+
+
+/**Repository for managing images */
 interface ImagesRepository {
 
     suspend fun getLastTrendingGif(apiKey: String, limit: Int): ImageResponseDto

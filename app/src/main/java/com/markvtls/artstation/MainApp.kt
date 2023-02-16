@@ -3,17 +3,14 @@ package com.markvtls.artstation
 import android.app.Application
 import androidx.hilt.work.HiltWorkerFactory
 import androidx.work.Configuration
-import androidx.work.ExistingPeriodicWorkPolicy
-import androidx.work.PeriodicWorkRequestBuilder
-import androidx.work.WorkManager
-import com.markvtls.artstation.workers.NewImagesWorker
 import dagger.hilt.android.HiltAndroidApp
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
+/**Application class is required to use Hilt DI*/
 @HiltAndroidApp
 class MainApp: Application(), Configuration.Provider {
 
+    /**WorkerFactory is necessary for DI Worker with Hilt */
     @Inject lateinit var workerFactory: HiltWorkerFactory
 
 

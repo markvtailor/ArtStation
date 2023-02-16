@@ -14,6 +14,8 @@ import com.markvtls.artstation.MainActivity
 import com.markvtls.artstation.R
 import com.markvtls.artstation.data.Constants.NOTIFICATIONS_CHANNEL_ID
 
+
+/**Class for managing notifications*/
 class NotificationsManager(
     private val context: Context) {
 

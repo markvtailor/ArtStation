@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
+/**Use this to get favorite images from RealmDB*/
 class GetFavoritesUseCase @Inject constructor(
     private val repository: ImagesRepository
 ) {
